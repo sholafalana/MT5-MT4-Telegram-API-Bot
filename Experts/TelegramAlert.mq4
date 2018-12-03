@@ -106,14 +106,14 @@ string msg, msgbuy, msgsell, msgclos,msgfilled,msgdel,action1,action2,action3,ms
   int tmp = OrdersTotal();
       
   if (tmp < totalord ){    
-    // last closed order
+    // last closed order fixed
    int last_trade= HistoryTotal();
    if(last_trade>0)
    {
        if(OrderSelect(last_trade-1,SELECT_BY_POS,MODE_HISTORY)==true)     {
             if ((OrderType()==OP_BUY) || (OrderType()==OP_SELL) ){
             string action1 = " Order Closed";
-                 msgclos =StringFormat("Name: %s\nSymbol: %s\nPrice: %s\nAction: %s",mySigalname,OrderSymbol(),OrderClosePrice(),action1);
+                 msgclos =StringFormat("Name: %s\nSymbol: %s\nPrice: %s\nAction: %s",mySigalname,OrderSymbol(),DoubleToString(OrderClosePrice(), 5),action1);
             
                 msg= StringConcatenate(TypeMnem(OrderType())  ," Order closed : "," ", OrderSymbol()," "   ,OrderLots() , " Lot profit ",OrderProfit());
                 if(alert_orderclosed){  
