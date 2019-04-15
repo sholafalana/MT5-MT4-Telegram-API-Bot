@@ -29,7 +29,7 @@ The other mode focuses on operation on a channel. Telegram channels are accounts
 * Export and copy all files from include to the MT4/MT5 include folder, input the api key from the bot to the Expert Advisor's token, add the bot as an administrator of your signal channel or Group, any event that happens on your trade terminal will be notify to instantly on your channel
 
 
-![telegram](https://user-images.githubusercontent.com/32399318/56165502-0ba6ee80-5fcb-11e9-8332-7a09860f61b5.jpg)
+![mt4-telegram-signal-provider-screen-8054](https://user-images.githubusercontent.com/32399318/56166011-7147aa80-5fcc-11e9-9444-1bcaa574219e.jpg)
 
 ![test1](https://user-images.githubusercontent.com/32399318/56165638-63ddf080-5fcb-11e9-9b88-5e9fb94821b6.jpg)
 
