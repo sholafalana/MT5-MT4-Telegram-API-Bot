@@ -5,7 +5,8 @@ it delivers Trade Signal Alert From MT4 and MT5 Terminal to Telegram, EMail, or 
 
 # TODO
 * Search for a bot on telegram with name "@BotFather". We will find it through the search engine. After adding it to the list of contacts,
-we will start communicating with it using the /start command. As a response it will send you a list of all available commands, 
+we will start communicating with it using the /start command. As a response it will send you a list of all available commands, As shown in the image below
+![pic1](https://user-images.githubusercontent.com/32399318/56162967-1fe7ed00-5fc5-11e9-9555-192c33b34d7f.jpg)
 
 
 * With the /newbot command we begin the registration of a new bot. We need to come up with two names. The first one is a name of a bot that 
