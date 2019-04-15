@@ -15,6 +15,13 @@ a token or API Key – the access key for operating with a bot through API as sh
 
 ![pic2](https://user-images.githubusercontent.com/32399318/56163370-0d21e800-5fc6-11e9-8481-69861daa4a1e.jpg)
 
+## Operation mode for bots
+
+With regard to bots, you can let them join groups by using the /setjoingroups command. If a bot is added to a group, then by using the /setprivacy command you can set the option to either receive all messages, or only those that start with a sign of the symbol team “/”. 
+
+![pic4](https://user-images.githubusercontent.com/32399318/56163746-05af0e80-5fc7-11e9-801c-362d94e36a4d.jpg)
+
+The other mode focuses on operation on a channel. Telegram channels are accounts for transmitting messages for a wide audience that support an unlimited number of subscribers. The important feature of channels is that users can't leave comments and likes on the news feed (one-way connection). Only channel administrators can create messages there 
 
 * Export and copy all files from include to the MT4/MT5 include folder, input the api key from the bot to the Expert Advisor's token, add the bot
 as an administrator of your signal channel or Group, any event that happens on your trade terminal will be notify to instantly on your channel
