@@ -23,8 +23,16 @@ With regard to bots, you can let them join groups by using the /setjoingroups co
 
 The other mode focuses on operation on a channel. Telegram channels are accounts for transmitting messages for a wide audience that support an unlimited number of subscribers. The important feature of channels is that users can't leave comments and likes on the news feed (one-way connection). Only channel administrators can create messages there 
 
-* Export and copy all files from include to the MT4/MT5 include folder, input the api key from the bot to the Expert Advisor's token, add the bot
-as an administrator of your signal channel or Group, any event that happens on your trade terminal will be notify to instantly on your channel
+![pic5__2](https://user-images.githubusercontent.com/32399318/56163931-8241ed00-5fc7-11e9-99e4-96a879ae0b9a.jpg)
+
+
+* Export and copy all files from include to the MT4/MT5 include folder, input the api key from the bot to the Expert Advisor's token, add the bot as an administrator of your signal channel or Group, any event that happens on your trade terminal will be notify to instantly on your channel
+
+
+![telegram](https://user-images.githubusercontent.com/32399318/56165502-0ba6ee80-5fcb-11e9-8332-7a09860f61b5.jpg)
+
+![test1](https://user-images.githubusercontent.com/32399318/56165638-63ddf080-5fcb-11e9-9b88-5e9fb94821b6.jpg)
+
 
 
 
