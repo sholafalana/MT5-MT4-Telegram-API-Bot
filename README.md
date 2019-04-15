@@ -11,9 +11,12 @@ we will start communicating with it using the /start command. As a response it w
 
 * With the /newbot command we begin the registration of a new bot. We need to come up with two names. The first one is a name of a bot that 
 can be set in your native language. The second one is a username of a bot in Latin that ends with a “bot” prefix. As a result, we obtain 
-a token or API Key – the access key for operating with a bot through API.
+a token or API Key – the access key for operating with a bot through API as shown below
 
-* Export and copy all files from include to the MT4/MT5 include folder, copy the api key from the bot to the loaded Expert Advisor, add the bot
+![pic2](https://user-images.githubusercontent.com/32399318/56163370-0d21e800-5fc6-11e9-8481-69861daa4a1e.jpg)
+
+
+* Export and copy all files from include to the MT4/MT5 include folder, input the api key from the bot to the Expert Advisor's token, add the bot
 as an administrator of your signal channel or Group, any event that happens on your trade terminal will be notify to instantly on your channel
 
 
