@@ -136,6 +136,29 @@ int StartTelegramServer()
   {
    bot.Token(InpToken);
 
+   if(!checked)
+     {
+      if(StringLen(InpChannelName)==0)
+        {
+         Print("Error: Channel name is empty");
+         Sleep(10000);
+         return (0);
+        }
+
+      int result=bot.GetMe();
+      if(result==0)
+        {
+         Print("Bot name: ",bot.Name());
+         checked=true;
+        }
+      else
+        {
+         Print("Error: ",GetErrorDescription(result));
+         Sleep(10000);
+         return(0);
+        }
+     }
+
    GetCurrentOrdersOnStart();
 
    int  changed     = 0;
@@ -160,28 +183,7 @@ int StartTelegramServer()
      }
 
 
-   if(!checked)
-     {
-      if(StringLen(InpChannelName)==0)
-        {
-         Print("Error: Channel name is empty");
-         Sleep(10000);
-         return (0);
-        }
 
-      int result=bot.GetMe();
-      if(result==0)
-        {
-         Print("Bot name: ",bot.Name());
-         checked=true;
-        }
-      else
-        {
-         Print("Error: ",GetErrorDescription(result));
-         Sleep(10000);
-         return(0);
-        }
-     }
    return(0);
   }
 
