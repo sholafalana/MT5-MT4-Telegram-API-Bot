@@ -1,21 +1,27 @@
 //+------------------------------------------------------------------+
-//|                                             TelegramAlertMT4.mq4 |
-//|                                 Copyright 2020, SafeCarp Finance |
-//|     https://www.upwork.com/o/profiles/users/~01f385ced64055abbc/ |
+//|                                            TelegramAlert_MT4.mq4 |
+//|                                        Copyright 2020, Assetbase |
+//|                                         https://t.me/assetbaseTS |
 //+------------------------------------------------------------------+
-#property copyright "Copyright 2020, SafeCarp Finance"
-#property link      "https://www.upwork.com/o/profiles/users/~01f385ced64055abbc/"
-#property version   "2.00"
+#property copyright "Copyright 2020, Assetbase"
+#property link      "https://t.me/assetbaseTS"
+#property version   "3.00"
+#property strict
+
 #property strict
 #include <Telegram.mqh>
 
 
 //--- input parameters
-input string InpChannelName="@mychannelname";//Channel Name
+input string InpChannelName="@myPublicGroupName";//Channel Name
 input string InpToken="insert telegram bot API here";//Token
 extern string mySigalname = "Enter my signal name";
+input string _template = ""; //TemplateName e.g ADX
 
 input bool AlertonTelegram = true;
+input bool UseFormat_forCopier = false;
+input bool SendScreenShot = false;
+input ENUM_TIMEFRAMES ScreenShotTimeFrame = PERIOD_CURRENT;
 input bool MobileNotification = false;
 input bool EmailNotification = false;
 uint   ServerDelayMilliseconds = 300;
@@ -96,12 +102,7 @@ bool DetectEnvironment()
   {
 
 
-   if(IsDllsAllowed() == false)
-     {
-      Print("DLL call is not allowed. ", "TelegramSignalAlert", " cannot run.");
-      return false;
-     }
-
+   
 
    pushdelay     = (ServerDelayMilliseconds > 0) ? ServerDelayMilliseconds : 10;
    telegram_runningstatus  = false;
@@ -134,9 +135,9 @@ bool DetectEnvironment()
 //+------------------------------------------------------------------+
 int StartTelegramServer()
   {
+   
    bot.Token(InpToken);
-
-   if(!checked)
+    if(!checked)
      {
       if(StringLen(InpChannelName)==0)
         {
@@ -183,7 +184,7 @@ int StartTelegramServer()
      }
 
 
-
+  
    return(0);
   }
 
@@ -326,11 +327,28 @@ int PushOrderOpen()
             continue;
 
          Print("Order Added:", OrderSymbol(), ", Size:", ArraySize(orderids), ", OrderId:", OrderTicket());
+         if(UseFormat_forCopier == false){
          message =StringFormat("Name: %s\nSymbol: %s\nType: %s\nAction: %s\nPrice: %s\nTime: %s\nLots: %s\nTakeProfit: %s\nStopLoss: %s",mySigalname,
                                OrderSymbol(),TypeMnem(OrderType()),"OPEN",
-                               DoubleToString(OrderOpenPrice(),Digits),
-                               TimeToString(OrderOpenTime()),DoubleToString(OrderLots(), 2),DoubleToString(OrderTakeProfit(), Digits),DoubleToString(OrderStopLoss(), Digits));
-         PushToSubscriber(message);
+                               DoubleToString(OrderOpenPrice(),MarketInfo(OrderSymbol(),MODE_DIGITS)),
+                               TimeToString(OrderOpenTime()),DoubleToString(OrderLots(), 2),DoubleToString(OrderTakeProfit(), MarketInfo(OrderSymbol(),MODE_DIGITS)),DoubleToString(OrderStopLoss(), MarketInfo(OrderSymbol(),MODE_DIGITS)));
+                               }
+                               
+                                if(UseFormat_forCopier == true){
+         message =StringFormat(" \nAssetname: %s\nType: %s\nStopLoss: %s\nTakeProfit: %s\nLots: %s\nComment: %s",
+                                  OrderSymbol(),
+                                  TypeMnem(OrderType()),
+                                 DoubleToString(OrderStopLoss(), MarketInfo(OrderSymbol(),MODE_DIGITS)),
+                                 DoubleToString(OrderTakeProfit(), MarketInfo(OrderSymbol(),MODE_DIGITS)),
+                                  DoubleToString(OrderLots(), 2),
+                                  mySigalname
+
+
+                                 );
+                                 
+                                 }
+
+         PushToSubscriber(OrderSymbol(),message);
 
          changed ++;
         }
@@ -364,9 +382,9 @@ int PushOrderClosed()
          Print("Order Closed:", OrderSymbol(), ", Size:", ArraySize(orderids), ", OrderId:", OrderTicket());
          message =StringFormat("Name: %s\nSymbol: %s\nType: %s\nAction: %s\nPrice: %s\nTime: %s\nLots: %s\nTakeProfit: %s\nStopLoss: %s",mySigalname,
                                OrderSymbol(),TypeMnem(OrderType()),"CLOSED",
-                               DoubleToString(OrderClosePrice(),Digits),
-                               TimeToString(OrderCloseTime()),DoubleToString(OrderLots(), 2),DoubleToString(OrderTakeProfit(), Digits),DoubleToString(OrderStopLoss(), Digits));
-         PushToSubscriber(message);
+                               DoubleToString(OrderClosePrice(),MarketInfo(OrderSymbol(),MODE_DIGITS)),
+                               TimeToString(OrderCloseTime()),DoubleToString(OrderLots(), 2),DoubleToString(OrderTakeProfit(), MarketInfo(OrderSymbol(),MODE_DIGITS)),DoubleToString(OrderStopLoss(), MarketInfo(OrderSymbol(),MODE_DIGITS)));
+         PushToSubscriber(OrderSymbol(),message);
 
          changed ++;
         }
@@ -429,18 +447,18 @@ int PushOrderModify()
             Print("Partially Closed:", OrderSymbol(), ", Size:", ArraySize(orderids), ", OrderId:", OrderTicket(), ", Before OrderId: ", orderpartiallyclosedid);
             message =StringFormat("Name: %s\nSymbol: %s\nType: %s\nAction: %s\nPrice: %s\nTime: %s\nLots: %s\nTakeProfit: %s\nStopLoss: %s",mySigalname,
                                   OrderSymbol(),TypeMnem(OrderType()),"Partially Closed",
-                                  DoubleToString(OrderOpenPrice(),Digits),
-                                  TimeToString(TimeCurrent()),DoubleToString(OrderLots(), 2),DoubleToString(OrderTakeProfit(), Digits),DoubleToString(OrderStopLoss(), Digits));
-            PushToSubscriber(message);
+                                  DoubleToString(OrderOpenPrice(),MarketInfo(OrderSymbol(),MODE_DIGITS)),
+                                  TimeToString(TimeCurrent()),DoubleToString(OrderLots(), 2),DoubleToString(OrderTakeProfit(), MarketInfo(OrderSymbol(),MODE_DIGITS)),DoubleToString(OrderStopLoss(), MarketInfo(OrderSymbol(),MODE_DIGITS)));
+            PushToSubscriber(OrderSymbol(),message);
            }
          else
            {
             Print("Order Modify:", OrderSymbol(), ", Size:", ArraySize(orderids), ", OrderId:", OrderTicket());
             message =StringFormat("Name: %s\nSymbol: %s\nType: %s\nAction: %s\nPrice: %s\nTime: %s\nLots: %s\nTakeProfit: %s\nStopLoss: %s",mySigalname,
                                   OrderSymbol(),TypeMnem(OrderType()),"Order Modified",
-                                  DoubleToString(OrderOpenPrice(),Digits),
-                                  TimeToString(TimeCurrent()),DoubleToString(OrderLots(), 2),DoubleToString(OrderTakeProfit(), Digits),DoubleToString(OrderStopLoss(), Digits));
-            PushToSubscriber(message);
+                                  DoubleToString(OrderOpenPrice(),MarketInfo(OrderSymbol(),MODE_DIGITS)),
+                                  TimeToString(TimeCurrent()),DoubleToString(OrderLots(), 2),DoubleToString(OrderTakeProfit(), MarketInfo(OrderSymbol(),MODE_DIGITS)),DoubleToString(OrderStopLoss(), MarketInfo(OrderSymbol(),MODE_DIGITS)));
+            PushToSubscriber(OrderSymbol(),message);
            }
 
          changed ++;
@@ -453,7 +471,7 @@ int PushOrderModify()
 //+------------------------------------------------------------------+
 //| Push the message                                                  |
 //+------------------------------------------------------------------+
-void PushToSubscriber(const string message)
+void PushToSubscriber(const string symbl,const string message)
   {
    if(message == "")
       return ;
@@ -468,8 +486,21 @@ void PushToSubscriber(const string message)
      }
    if(AlertonTelegram)
      {
-      bot.SendMessage(InpChannelName,message);
+    //  bot.SendMessage(InpChannelName,message);
      }
+     
+      if(SendScreenShot)
+     {
+      if(StringFind(symbl,"null") != -1)
+    return ;
+      sendSnapShots(symbl,ScreenShotTimeFrame,message);
+     }
+     
+      if(SendScreenShot == false)
+     {
+     bot.SendMessage(InpChannelName,message);
+     }
+     
 
 
   }
@@ -524,6 +555,76 @@ bool FindOrderInPrevPool(const int order_ticketid)
 
    return (orderfound > 0) ? true : false;
   }
+  
+  int sendSnapShots(string thesymbol, ENUM_TIMEFRAMES _period, string message){
+   
+     int result=0;
+           long chart_id=ChartOpen(thesymbol,_period);
+     // if(chart_id==0)
+     //    return(ERR_CHART_NOT_FOUND);
+
+      ChartSetInteger(ChartID(),CHART_BRING_TO_TOP,true);
+
+      //--- updates chart
+      int wait=60;
+      while(--wait>0)
+        {
+         if(SeriesInfoInteger(thesymbol,_period,SERIES_SYNCHRONIZED))
+            break;
+         Sleep(500);
+        }
+
+      if(_template!= ""){
+         ChartApplyTemplate(chart_id,_template);
+        //    PrintError(_LastError,InpLanguage);
+          //  ChartApplyTemplate(chart_id,_template);
+         }
+      ChartRedraw(chart_id);
+      Sleep(500);
+
+      ChartSetInteger(chart_id,CHART_SHOW_GRID,false);
+
+      ChartSetInteger(chart_id,CHART_SHOW_PERIOD_SEP,false);
+
+      string filename=StringFormat("%s%d.gif",thesymbol,_period);
+
+      if(FileIsExist(filename))
+         FileDelete(filename);
+      ChartRedraw(chart_id);
+
+      Sleep(100);
+
+      if(ChartScreenShot(chart_id,filename,800,600,ALIGN_RIGHT))
+        {
+         Sleep(100);
+
+         //--- waitng 30 sec for save screenshot 
+         wait=30;
+         while(!FileIsExist(filename) && --wait>0)
+            Sleep(500);
+
+         //---
+         if(FileIsExist(filename))
+           {
+            string screen_id;
+           
+            result=bot.SendPhoto(screen_id,InpChannelName,filename,thesymbol + message);
+            
+       
+           }
+        
+
+        } 
+
+      ChartClose(chart_id);    
+   
+   
+   
+  return result; 
+   }
+  
+  
+
 
 //+------------------------------------------------------------------+
 //|                                                                  |
